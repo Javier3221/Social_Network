@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Social_Network.Core.Domain.Entities
 {
-    public class Post : AuditableProperties
+    public class Post : AuditableBaseEntity
     {
         public string PostDescription { get; set; }
         public string ImgUrl { get; set; }

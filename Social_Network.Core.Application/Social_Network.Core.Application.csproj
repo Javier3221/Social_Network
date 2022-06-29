@@ -8,7 +8,8 @@
     <Folder Include="Interfaces\" />
     <Folder Include="Helpers\" />
     <Folder Include="Services\" />
-    <Folder Include="ViewModels\" />
+    <Folder Include="ViewModels\Friend\" />
+    <Folder Include="ViewModels\Commentary\" />
   </ItemGroup>
 
   <ItemGroup>

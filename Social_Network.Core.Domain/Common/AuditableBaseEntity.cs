@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Social_Network.Core.Domain.Common
 {
-    public class AuditableProperties
+    public class AuditableBaseEntity
     {
         public int Id { get; set; }
         public DateTime DateCreated { get; set; }

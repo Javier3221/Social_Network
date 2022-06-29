@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Social_Network.Core.Domain.Entities
 {
-    public class Friend : AuditableProperties
+    public class Friend : AuditableBaseEntity
     {
         public int UserId { get; set; }
         public int FriendsWith { get; set; }
