@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Social_Network.Controllers
 {
@@ -91,7 +92,14 @@ namespace Social_Network.Controllers
                 return View(UserVm);
             }
 
-            await _userService.Add(UserVm);
+            SaveUserViewModel saveUserVm = await _userService.Add(UserVm);
+            if (saveUserVm != null && saveUserVm.Id != 0)
+            {
+                saveUserVm.ProfileImgUrl = UploadImages.UploadFile(new List<IFormFile> { UserVm.ProfileImage }, saveUserVm.Id);
+                await _userService.Update(saveUserVm, saveUserVm.Id);
+            }
+            
+            
             return RedirectToRoute(new { controller = "User", action = "Login" });
         }
     }
