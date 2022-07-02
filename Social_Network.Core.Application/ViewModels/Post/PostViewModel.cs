@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Social_Network.Core.Application.ViewModels.Commentary;
+using Social_Network.Core.Application.ViewModels.User;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +14,8 @@ namespace Social_Network.Core.Application.ViewModels.Post
         public string PostDescription { get; set; }
         public string ImgUrl { get; set; }
         public int UserId { get; set; }
+
+        public UserViewModel User { get; set; }
+        public ICollection<CommentaryViewModel> Commentaries { get; set; }
     }
 }
