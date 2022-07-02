@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Social_Network.Core.Application.Helpers;
 using Social_Network.Core.Application.ViewModels.User;
 using Social_Network.Core.Domain.Common;
 using Social_Network.Core.Domain.Entities;
@@ -15,12 +16,12 @@ namespace Social_Network.Infrastructure.Persistence.Contexts
     public class ApplicationContext : DbContext
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly SaveUserViewModel _saveUserViewModel;
+        private readonly UserViewModel _saveUserViewModel;
 
-        public ApplicationContext(DbContextOptions<ApplicationContext> options, IHttpContextAccessor httpContextAccessor, SaveUserViewModel saveUserViewModel) : base(options)
+        public ApplicationContext(DbContextOptions<ApplicationContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
         {
             _httpContextAccessor = httpContextAccessor;
-            _saveUserViewModel = saveUserViewModel;
+            _saveUserViewModel = _httpContextAccessor.HttpContext.Session.Get<UserViewModel>("user");
         }
 
         public DbSet<User> User { get; set; }
