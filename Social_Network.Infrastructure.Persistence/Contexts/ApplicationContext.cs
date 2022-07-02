@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Social_Network.Core.Application.ViewModels.User;
+using Social_Network.Core.Domain.Common;
 using Social_Network.Core.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Social_Network.Infrastructure.Persistence.Contexts
@@ -12,16 +15,29 @@ namespace Social_Network.Infrastructure.Persistence.Contexts
     public class ApplicationContext : DbContext
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly SaveUserViewModel _saveUserViewModel;
 
-        public ApplicationContext(DbContextOptions<ApplicationContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
+        public ApplicationContext(DbContextOptions<ApplicationContext> options, IHttpContextAccessor httpContextAccessor, SaveUserViewModel saveUserViewModel) : base(options)
         {
             _httpContextAccessor = httpContextAccessor;
+            _saveUserViewModel = saveUserViewModel;
         }
 
         public DbSet<User> User { get; set; }
         public DbSet<Friend> Friend { get; set; }
         public DbSet<Commentary> Commentaries { get; set; }
         public DbSet<Post> Posts { get; set; }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            foreach (var entry in ChangeTracker.Entries<AuditableBaseEntity>())
+            {
+                entry.Entity.DateCreated = DateTime.Now;
+                entry.Entity.CreatedBy = _saveUserViewModel.UserName;
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
