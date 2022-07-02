@@ -10,5 +10,8 @@ namespace Social_Network.Core.Application.Interfaces.Services
 {
     public interface IUserService : IGenericService<SaveUserViewModel, UserViewModel, User>
     {
+        Task<UserViewModel> Login(LoginViewModel loginVm);
+        Task<bool> FindUserNameAvailabilty(string userName);
+        Task<List<UserViewModel>> GetAllViewModelWithInclude();
     }
 }
