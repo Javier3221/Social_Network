@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Social_Network.Infrastructure.Persistence.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class ChangeNullabilityToImgUrl : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,7 +16,7 @@ namespace Social_Network.Infrastructure.Persistence.Migrations
                     Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProfileImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProfileImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),

@@ -10,8 +10,8 @@ using Social_Network.Infrastructure.Persistence.Contexts;
 namespace Social_Network.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220629001445_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20220702225516_ChangeNullabilityToImgUrl")]
+    partial class ChangeNullabilityToImgUrl
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -143,7 +143,6 @@ namespace Social_Network.Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfileImgUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
