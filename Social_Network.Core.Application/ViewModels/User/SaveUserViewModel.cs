@@ -10,6 +10,7 @@ namespace Social_Network.Core.Application.ViewModels.User
 {
     public class SaveUserViewModel
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Your name is required")]
         [DataType(DataType.Text)]
         public string Name { get; set; }
