@@ -23,7 +23,7 @@ namespace Social_Network.Core.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<SaveViewModel> Add(SaveViewModel vm)
+        public virtual async Task<SaveViewModel> Add(SaveViewModel vm)
         {
             Entity entity = _mapper.Map<Entity>(vm);
 
@@ -34,13 +34,13 @@ namespace Social_Network.Core.Application.Services
             return entityVm;
         }
 
-        public async Task Delete(int id)
+        public virtual async Task Delete(int id)
         {
             var entity = await _genericRepository.GetByIdAsync(id);
             await _genericRepository.DeleteAsync(entity);
         }
 
-        public async Task<SaveViewModel> GetByIdSaveViewModel(int id)
+        public virtual async Task<SaveViewModel> GetByIdSaveViewModel(int id)
         {
             Entity entity = await _genericRepository.GetByIdAsync(id);
 
@@ -49,7 +49,7 @@ namespace Social_Network.Core.Application.Services
             return vm;
         }
 
-        public async Task<List<ViewModel>> GetAllViewModel()
+        public virtual async Task<List<ViewModel>> GetAllViewModel()
         {
             var entityList = await _genericRepository.GetAllAsync();
 
