@@ -31,12 +31,12 @@ namespace Social_Network.Infrastructure.Persistence.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<Entity>> GetAllAsync()
+        public virtual async Task<List<Entity>> GetAllAsync()
         {
             return await _dbContext.Set<Entity>().ToListAsync();
         }
 
-        public async Task<List<Entity>> GetAllWithIncludeAsync(List<string> properties)
+        public virtual async Task<List<Entity>> GetAllWithIncludeAsync(List<string> properties)
         {
             var query = _dbContext.Set<Entity>().AsQueryable();
 
@@ -48,7 +48,7 @@ namespace Social_Network.Infrastructure.Persistence.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<Entity> GetByIdAsync(int id)
+        public virtual async Task<Entity> GetByIdAsync(int id)
         {
             return await _dbContext.Set<Entity>().FindAsync(id);
         }
