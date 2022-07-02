@@ -25,6 +25,13 @@ namespace Social_Network.Infrastructure.Persistence.Repositories
             return entity;
         }
 
+        public async Task UpdateAsync(Entity entity, int id)
+        {
+            Entity entry = await _dbContext.Set<Entity>().FindAsync(id);
+            _dbContext.Entry(entry).CurrentValues.SetValues(entity);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public virtual async Task DeleteAsync(Entity entity)
         {
             _dbContext.Set<Entity>().Remove(entity);

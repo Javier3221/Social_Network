@@ -12,6 +12,7 @@ namespace Social_Network.Core.Application.Interfaces.Services
         where Entity : class
     {
         Task<SaveViewModel> Add(SaveViewModel vm);
+        Task Update(SaveViewModel vm, int id);
         Task Delete(int id);
         Task<SaveViewModel> GetByIdSaveViewModel(int id);
         Task<List<ViewModel>> GetAllViewModel();

@@ -9,6 +9,5 @@ namespace Social_Network.Core.Application.Interfaces.Repositories
 {
     public interface IPostRepository : IGenericRepositoryAsync<Post>
     {
-        Task UpdateAsync(Post post, int id);
     }
 }

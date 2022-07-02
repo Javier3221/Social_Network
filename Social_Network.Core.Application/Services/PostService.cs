@@ -21,14 +21,5 @@ namespace Social_Network.Core.Application.Services
             _repository = postRepository;
             _mapper = mapper;
         }
-
-        public async Task Update(SavePostViewModel vm, int id)
-        {
-            Post post = await _repository.GetByIdAsync(vm.Id);
-            post.Id = vm.Id;
-            post.PostDescription = vm.PostDescription;
-
-            await _repository.UpdateAsync(post, id);
-        }
     }
 }

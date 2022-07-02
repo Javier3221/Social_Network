@@ -18,12 +18,5 @@ namespace Social_Network.Infrastructure.Persistence.Repositories
         {
             _dbContext = dbContext;
         }
-
-        public async Task UpdateAsync(Post post, int id)
-        {
-            Post entry = await _dbContext.Set<Post>().FindAsync(id);
-            _dbContext.Entry(entry).CurrentValues.SetValues(post);
-            await _dbContext.SaveChangesAsync();
-        }
     }
 }
