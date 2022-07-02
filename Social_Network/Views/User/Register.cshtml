@@ -12,7 +12,8 @@
                     <h2>Create Account</h2>
                 </div>
                 <div class="card-body">
-                    <form method="post" asp-controller="User" asp-action="Register">
+                    <form method="post" enctype="multipart/form-data" asp-controller="User" asp-action="Register">
+                        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
                         <div class="mb-3">
                             <label asp-for="Name" class="form-label">Name:</label>
                             <input asp-for="Name" class="form-control" />
@@ -39,7 +40,6 @@
                             <span asp-validation-for="Phone" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
                             <label asp-for="UserName" class="form-label">User Name:</label>
                             <input asp-for="UserName" class="form-control" />
                             <span asp-validation-for="UserName" class="text-danger"></span>
