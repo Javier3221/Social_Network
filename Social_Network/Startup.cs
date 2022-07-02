@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Social_Network.Infrastructure.Persistence;
+using Social_Network.Core.Application;
 
 namespace Social_Network
 {
@@ -28,6 +29,8 @@ namespace Social_Network
             services.AddControllersWithViews();
 
             services.AddPersistenceInfrastructure(Configuration);
+
+            services.AddApplicationLayer(Configuration);
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
