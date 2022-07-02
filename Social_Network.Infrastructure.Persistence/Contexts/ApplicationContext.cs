@@ -101,10 +101,6 @@ namespace Social_Network.Infrastructure.Persistence.Contexts
                 .IsRequired();
 
             modelBuilder.Entity<User>()
-                .Property(user => user.ProfileImgUrl)
-                .IsRequired();
-
-            modelBuilder.Entity<User>()
                 .Property(user => user.Email)
                 .IsRequired();
 
