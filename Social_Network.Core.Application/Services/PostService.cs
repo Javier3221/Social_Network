@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Social_Network.Core.Application.Helpers;
 using Social_Network.Core.Application.Interfaces.Repositories;
 using Social_Network.Core.Application.Interfaces.Services;
 using Social_Network.Core.Application.ViewModels.Post;
+using Social_Network.Core.Application.ViewModels.User;
 using Social_Network.Core.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -15,11 +18,20 @@ namespace Social_Network.Core.Application.Services
     {
         private readonly IPostRepository _repository;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public PostService(IPostRepository postRepository, IMapper mapper) : base(postRepository, mapper)
+        public PostService(IPostRepository postRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(postRepository, mapper)
         {
             _repository = postRepository;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
+        }
+
+        public override async Task<SavePostViewModel> Add(SavePostViewModel saveVm)
+        {
+            saveVm.UserId = _httpContextAccessor.HttpContext.Session.Get<UserViewModel>("user").Id;
+
+            return await base.Add(saveVm);
         }
     }
 }
