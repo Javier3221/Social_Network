@@ -17,7 +17,6 @@ namespace Social_Network.Core.Application.ViewModels.Post
         public string PostDescription { get; set; }
         public string ImgUrl { get; set; }
         [DataType(DataType.Upload)]
-        [MaxImgRange(1, ErrorMessage = "You cant upload more than one image per post")]
         public IFormFile PostImage { get; set; }
         public int UserId { get; set; }
     }
