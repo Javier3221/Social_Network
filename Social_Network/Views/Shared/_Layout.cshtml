@@ -25,7 +25,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     @if (user != null)
                     {
-                        <ul class="navbar-nav">
+                        <ul class="navbar-nav flex-fill">
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
@@ -34,12 +34,12 @@
                             </li>
                         </ul>
 
-                        <div class="d-flex">
-                            <div class="d-flex align-items-center">
+                        <div class="d-flex gap-2">
+                            <div class="d-flex align-items-start">
                                 <img src="@user.ProfileImgUrl" width="32" height="32" class="rounded-circle" />
                                 <p class="fw-bold text-light">@user.UserName</p>
                             </div>
-                            <a class="btn btn-outline-danger ms-auto" asp-controller="User" asp-action="LogOut">Log Out</a>
+                            <a class="btn btn-outline-danger" asp-controller="User" asp-action="LogOut">Log Out</a>
                         </div>
                     }
 
