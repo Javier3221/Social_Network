@@ -10,7 +10,7 @@ namespace Social_Network.Core.Application.Helpers
 {
     public static class UploadImages
     {
-        public static string UploadFile(List<IFormFile> files, int id, bool isEditMode = false, string imageUrls = "")
+        public static string UploadFile(List<IFormFile> files, int id, string folderName, bool isEditMode = false, string imageUrls = "")
         {
             if (isEditMode && files == null)
             {
@@ -18,7 +18,7 @@ namespace Social_Network.Core.Application.Helpers
 
                 return paths;
             }
-            string basePath = $"/images/Profiles/{id}";
+            string basePath = $"/images/{folderName}/{id}";
             string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot{basePath}");
 
             //create folder if it doesn't exists
