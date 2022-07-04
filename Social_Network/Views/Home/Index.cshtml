@@ -9,13 +9,16 @@
 
 <div class="card card-body mb-3">
     <form class="w-100" asp-controller="Post" asp-action="Create" method="post">
-        @Html.ValidationSummary(false, "", new { @class = "text-danger"})
         <div class="d-flex mb-3">
             <div class="avatar avatar-xs me-2">
                 <img class="avatar-img rounded-circle" src="@user.ProfileImgUrl" width="64" height="64" alt="">
             </div>
             <textarea name="description" class="form-control pe-4 border-0" rows="2" data-autoresize="" placeholder="Share your thoughts..."></textarea>
         </div>
+        @if (ViewBag.Error != null)
+        {
+            <p class="text-danger">@ViewBag.Error</p>
+        }
         <ul class="nav nav-pills nav-stack small fw-normal">
             <li class="nav-item mt-auto">
                 <a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionPhoto">Add a photo to your post</a>

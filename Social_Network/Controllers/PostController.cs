@@ -34,7 +34,7 @@ namespace Social_Network.Controllers
             savePostVm.PostDescription = description;
             savePostVm.PostImage = postImage;
 
-            if (ModelState.IsValid)
+            if (savePostVm.PostDescription != null)
             {
                savePostVm = await _postService.Add(savePostVm);
                 if (savePostVm != null && savePostVm.Id != 0 && postImage != null)
@@ -45,7 +45,7 @@ namespace Social_Network.Controllers
             }
             else
             {
-                ModelState.AddModelError("descriptionValidation", "You need to write something before posting");
+                TempData["error"] = "You need to write something before posting this";
             }
 
             return RedirectToRoute(new { controller="Home", action="Index"});

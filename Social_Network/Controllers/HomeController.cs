@@ -20,6 +20,11 @@ namespace Social_Network.Controllers
 
         public IActionResult Index()
         {
+            if (TempData["error"] != null)
+            {
+                ViewBag.Error = TempData["error"].ToString();
+            }
+            
             return View();
         }
 
