@@ -1,8 +1,119 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Http;
+@using Social_Network.Core.Application.Helpers;
+@using Social_Network.Core.Application.ViewModels.User;
+@inject IHttpContextAccessor httpContextAccessor;
+@{ UserViewModel user = httpContextAccessor.HttpContext.Session.Get<UserViewModel>("user"); }
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="card card-body mb-3">
+    <form class="w-100" asp-controller="Post" asp-action="Create" method="post">
+        @Html.ValidationSummary(false, "", new { @class = "text-danger"})
+        <div class="d-flex mb-3">
+            <div class="avatar avatar-xs me-2">
+                <img class="avatar-img rounded-circle" src="@user.ProfileImgUrl" width="64" height="64" alt="">
+            </div>
+            <textarea name="description" class="form-control pe-4 border-0" rows="2" data-autoresize="" placeholder="Share your thoughts..."></textarea>
+        </div>
+        <ul class="nav nav-pills nav-stack small fw-normal">
+            <li class="nav-item mt-auto">
+                <a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionPhoto">Add a photo to your post</a>
+            </li>
+            <li class="nav-item ms-auto">
+                <button class="btn btn-success" type="submit">Post</button>
+            </li>
+        </ul>
+    </form>
+</div>
+
+<div class="modal fade" id="feedActionPhoto" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form class="w-100" method="post" asp-controller="Post" asp-action="Create" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="feedActionPhoto">Add post photo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="d-flex mb-3">
+                        <div class="avatar avatar-xs me-2">
+                            <img class="avatar-img rounded-circle" src="@user.ProfileImgUrl" width="64" height="64" alt=""> </a>
+                        </div>
+                        <textarea name="description" class="form-control pe-4 border-0" rows="2" data-autoresize="" placeholder="Share your thoughts..."></textarea>
+                    </div>
+                    <div>
+                        <label class="form-label" for="formFile">Upload image</label>
+                        <input name="postImage" class="form-control" type="file" id="formFile" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go back</button>
+                    <button type="submit" class="btn btn-primary">Post it</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="mb-2">
+    <h2>Your Friends' Posts</h2>
+</div>
+
+<div class="row d-flex justify-content-center">
+    <div class="col-7">
+        <div class="card mb-3">
+            <div class="card-header border-0 pb-0">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="me-2">
+                            <img class="rounded-circle" src="@user.ProfileImgUrl" width="64" height="64" alt=""> </a>
+                        </div>
+                        <div>
+                            <div class="nav nav-divider">
+                                <h6 class="nav-item card-title mb-0"> <ins class="text-info"> Lori Ferguson </ins></h6>
+                            </div>
+                            <p class="mb-0 small">Date published: 10/10/1010</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <p>I'm thrilled to share that I've completed a graduate certificate course in project management with the president's honor roll.</p>
+                <img class="card-img d-block m-auto" src="/images/Profiles/1/a140086b-2c4a-4662-85dc-498a3b0dd90c.png" width="" alt="Post" style="max-height: 240px" />
+            </div>
+            <div class="d-flex mb-3">
+                <div class="me-2 ms-2">
+                    <img class="rounded-circle" src="@user.ProfileImgUrl" width="32" height="32" alt=""> </a>
+                </div>
+                <form class="w-100 me-1">
+                    <div class="input-group">
+                        <textarea data-autoresize class="form-control pe-4 bg-light" rows="1" placeholder="Add a comment..."></textarea>
+                        <button type="submit" class="btn btn-outline-success">Post</button>
+                    </div>
+                </form>
+            </div>
+            <div class="p-3">
+                <ul class="comment-wrap list-unstyled">
+                    <li class="comment-item mb-2">
+                        <div class="d-flex position-relative">
+                            <div>
+                                <img class="avatar-img rounded-circle" width="32" height="32" src="@user.ProfileImgUrl" alt="">
+                            </div>
+                            <div class="ms-2">
+                                <div class="bg-dark bg-opacity-25 rounded-start-top-0 p-3 rounded">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="mb-1"> <ins class="text-primary"> Frances Guerrero </ins></h6>
+                                        <small class="ms-2">5hr</small>
+                                    </div>
+                                    <p class="small mb-0">Removed demands expense account in outward tedious do. Particular way thoroughly unaffected projection.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
