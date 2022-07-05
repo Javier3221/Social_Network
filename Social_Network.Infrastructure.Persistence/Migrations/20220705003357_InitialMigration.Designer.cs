@@ -10,8 +10,8 @@ using Social_Network.Infrastructure.Persistence.Contexts;
 namespace Social_Network.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220702225516_ChangeNullabilityToImgUrl")]
-    partial class ChangeNullabilityToImgUrl
+    [Migration("20220705003357_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -159,7 +159,7 @@ namespace Social_Network.Infrastructure.Persistence.Migrations
                     b.HasOne("Social_Network.Core.Domain.Entities.Post", "Post")
                         .WithMany("Commentaries")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.ClientNoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Social_Network.Core.Domain.Entities.User", "User")
@@ -178,13 +178,13 @@ namespace Social_Network.Infrastructure.Persistence.Migrations
                     b.HasOne("Social_Network.Core.Domain.Entities.User", "UserFriend")
                         .WithMany("FriendWith")
                         .HasForeignKey("FriendsWith")
-                        .OnDelete(DeleteBehavior.ClientNoAction)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Social_Network.Core.Domain.Entities.User", "User")
                         .WithMany("Friends")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -197,7 +197,7 @@ namespace Social_Network.Infrastructure.Persistence.Migrations
                     b.HasOne("Social_Network.Core.Domain.Entities.User", "User")
                         .WithMany("Posts")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("User");

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Social_Network.Infrastructure.Persistence.Migrations
 {
-    public partial class ChangeNullabilityToImgUrl : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -50,8 +50,7 @@ namespace Social_Network.Infrastructure.Persistence.Migrations
                         name: "FK_Friend_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -73,8 +72,7 @@ namespace Social_Network.Infrastructure.Persistence.Migrations
                         name: "FK_Posts_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -96,7 +94,8 @@ namespace Social_Network.Infrastructure.Persistence.Migrations
                         name: "FK_Commentaries_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Commentaries_User_UserId",
                         column: x => x.UserId,
