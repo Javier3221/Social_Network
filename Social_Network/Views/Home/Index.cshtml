@@ -1,7 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Http;
 @using Social_Network.Core.Application.Helpers;
 @using Social_Network.Core.Application.ViewModels.User;
+@using Social_Network.Core.Application.ViewModels.Post;
+@using Social_Network.Core.Application.ViewModels.Commentary;
 @inject IHttpContextAccessor httpContextAccessor;
+@model List<PostViewModel>;
 @{ UserViewModel user = httpContextAccessor.HttpContext.Session.Get<UserViewModel>("user"); }
 @{
     ViewData["Title"] = "Home Page";
@@ -11,13 +14,13 @@
     <form class="w-100" asp-controller="Post" asp-action="Create" method="post">
         <div class="d-flex mb-3">
             <div class="avatar avatar-xs me-2">
-                <img class="avatar-img rounded-circle" src="@user.ProfileImgUrl" width="64" height="64" alt="">
+                <img class="avatar-img rounded-circle border-dark" src="@user.ProfileImgUrl" width="64" height="64" alt="">
             </div>
             <textarea name="description" class="form-control pe-4 border-0" rows="2" data-autoresize="" placeholder="Share your thoughts..."></textarea>
         </div>
-        @if (ViewBag.Error != null)
+        @if (ViewBag.PostError != null)
         {
-            <p class="text-danger">@ViewBag.Error</p>
+            <p class="text-danger">@ViewBag.PostError</p>
         }
         <ul class="nav nav-pills nav-stack small fw-normal">
             <li class="nav-item mt-auto">
@@ -42,7 +45,7 @@
 
                     <div class="d-flex mb-3">
                         <div class="avatar avatar-xs me-2">
-                            <img class="avatar-img rounded-circle" src="@user.ProfileImgUrl" width="64" height="64" alt=""> </a>
+                            <img class="avatar-img rounded-circle border-dark" src="@user.ProfileImgUrl" width="64" height="64" alt="">
                         </div>
                         <textarea name="description" class="form-control pe-4 border-0" rows="2" data-autoresize="" placeholder="Share your thoughts..."></textarea>
                     </div>
@@ -61,62 +64,141 @@
 </div>
 
 <div class="mb-2">
-    <h2>Your Friends' Posts</h2>
+    <h2>Your Posts</h2>
 </div>
-
-<div class="row d-flex justify-content-center">
-    <div class="col-7">
-        <div class="card mb-3">
-            <div class="card-header border-0 pb-0">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center">
-                        <div class="me-2">
-                            <img class="rounded-circle" src="@user.ProfileImgUrl" width="64" height="64" alt=""> </a>
-                        </div>
-                        <div>
-                            <div class="nav nav-divider">
-                                <h6 class="nav-item card-title mb-0"> <ins class="text-info"> Lori Ferguson </ins></h6>
-                            </div>
-                            <p class="mb-0 small">Date published: 10/10/1010</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <p>I'm thrilled to share that I've completed a graduate certificate course in project management with the president's honor roll.</p>
-                <img class="card-img d-block m-auto" src="/images/Profiles/1/a140086b-2c4a-4662-85dc-498a3b0dd90c.png" width="" alt="Post" style="max-height: 240px" />
-            </div>
-            <div class="d-flex mb-3">
-                <div class="me-2 ms-2">
-                    <img class="rounded-circle" src="@user.ProfileImgUrl" width="32" height="32" alt=""> </a>
-                </div>
-                <form class="w-100 me-1">
-                    <div class="input-group">
-                        <textarea data-autoresize class="form-control pe-4 bg-light" rows="1" placeholder="Add a comment..."></textarea>
-                        <button type="submit" class="btn btn-outline-success">Post</button>
-                    </div>
-                </form>
-            </div>
-            <div class="p-3">
-                <ul class="comment-wrap list-unstyled">
-                    <li class="comment-item mb-2">
-                        <div class="d-flex position-relative">
+@if (Model.Count > 0) 
+{
+    @if (ViewBag.CommentError != null)
+    {
+        <p class="text-danger">@ViewBag.CommentError</p>
+    }
+    @foreach (PostViewModel post in Model)
+    {
+        <div class="row d-flex justify-content-center">
+            <div class="col-7">
+                <div class="card mb-3">
+                    <div class="card-header border-0 pb-0">
+                        <div class="d-flex align-items-center justify-content-between">
                             <div>
-                                <img class="avatar-img rounded-circle" width="32" height="32" src="@user.ProfileImgUrl" alt="">
-                            </div>
-                            <div class="ms-2">
-                                <div class="bg-dark bg-opacity-25 rounded-start-top-0 p-3 rounded">
-                                    <div class="d-flex justify-content-between">
-                                        <h6 class="mb-1"> <ins class="text-primary"> Frances Guerrero </ins></h6>
-                                        <small class="ms-2">5hr</small>
+                                <div class="d-flex align-items-center">
+                                    <div class="me-2">
+                                        <img class="rounded-circle border-dark" src="@post.User.ProfileImgUrl" width="64" height="64" alt="">
                                     </div>
-                                    <p class="small mb-0">Removed demands expense account in outward tedious do. Particular way thoroughly unaffected projection.</p>
+                                    <div>
+                                        <div class="nav nav-divider">
+                                            <h6 class="nav-item card-title mb-0"> <ins class="text-info">@post.User.UserName</ins></h6>
+                                        </div>
+                                        <p class="mb-0 small">Date published: @($"{post.DateCreated.Day}/{post.DateCreated.Month}/{post.DateCreated.Year}")</p>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="btn-group ms-5">
+                                <button class="btn btn-primary btn-update @(post.Id)">Edit</button>
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal@(post.Id)">Delete</button>
+                            </div>
                         </div>
-                    </li>
-                </ul>
+                    </div>
+                    <div class="card-body">
+                        <p>@post.PostDescription</p>
+                        @if (post.ImgUrl != null && post.ImgUrl != "")
+                        {
+                            <img class="card-img d-block m-auto border-dark" src="@post.ImgUrl" alt="Post" style="max-height: 240px" />
+                        }
+                        <div class="visually-hidden update-block @(post.Id)">
+                            <form method="post" enctype="multipart/form-data" asp-controller="Post" asp-action="Update" asp-route-id="@post.Id">
+                                <hr />
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <textarea name="description" class="form-control pe-4 border-success mb-2" rows="2" data-autoresize="" placeholder="Share your thoughts...">@post.PostDescription</textarea>
+                                        <label class="form-label" for="formFile">Upload image (leave empty if you want the same image)</label>
+                                        <input name="postImage" class="form-control" type="file" id="formFileUpdate" />
+                                    </div>
+                                    <div>
+                                        <div class="btn-group">
+                                            <button class="btn btn-success" type="submit">Update</button>
+                                            <button class="btn btn-danger">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr />
+                            </form>
+                        </div>
+                    </div>
+                    <div class="d-flex mb-3">
+                        <div class="me-2 ms-2">
+                            <img class="rounded-circle border-dark" src="@user.ProfileImgUrl" width="32" height="32" alt="">
+                        </div>
+                        <form class="w-100 me-1" asp-controller="Commentary" asp-action="Create" method="post" asp-route-postId="@post.Id">
+                            <div class="input-group">
+                                <textarea name="description" data-autoresize class="form-control pe-4 bg-light" rows="1" placeholder="Add a comment..."></textarea>
+                                <button type="submit" class="btn btn-outline-success">Post</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="p-3">
+                        <ul class="comment-wrap list-unstyled">
+                            @if (post.Commentaries != null)
+                            {
+                                if (post.Commentaries.Count != 0)
+                                {
+                                    @foreach (CommentaryViewModel commentary in post.Commentaries)
+                                    {
+                                        <li class="comment-item mb-2">
+                                            <div class="d-flex position-relative">
+                                                <div>
+                                                    <img class="avatar-img rounded-circle border-dark" width="32" height="32" src="@commentary.User.ProfileImgUrl" alt="">
+                                                </div>
+                                                <div class="ms-2">
+                                                    <div class="bg-dark bg-opacity-25 rounded-start-top-0 p-3 rounded">
+                                                        <div class="d-flex justify-content-between">
+                                                            <h6 class="mb-1"> <ins class="text-primary"> @commentary.User.UserName </ins></h6>
+                                                            <small class="ms-2">5hr</small>
+                                                        </div>
+                                                        <p class="small mb-0">@commentary.Description</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <li class="comment-item d-flex justify-content-center">
+                                    <p class="text-muted">There are no commentaries in this post</p>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <div class="modal fade" id="deleteModal@(post.Id)" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel@(post.Id)">Delete Post</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>Are you sure you want to delete this post?</h3>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No wait!</button>
+                        <form asp-controller="Post" asp-action="Delete" asp-route-id="@post.Id" method="post">
+                            <button class="btn btn-primary" type="submit">Yes, delete it</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="d-flex justify-content-center">
+        <h2>You have no posts yet</h2>
     </div>
-</div>
+}
