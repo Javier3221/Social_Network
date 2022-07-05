@@ -95,7 +95,7 @@ namespace Social_Network.Controllers
             SaveUserViewModel saveUserVm = await _userService.Add(UserVm);
             if (saveUserVm != null && saveUserVm.Id != 0)
             {
-                saveUserVm.ProfileImgUrl = UploadImages.UploadFile(new List<IFormFile> { UserVm.ProfileImage }, saveUserVm.Id, "Profiles");
+                saveUserVm.ProfileImgUrl = UploadImages.UploadFile(saveUserVm.Id, "Profiles", new List<IFormFile> { UserVm.ProfileImage });
                 await _userService.Update(saveUserVm, saveUserVm.Id);
             }
             
