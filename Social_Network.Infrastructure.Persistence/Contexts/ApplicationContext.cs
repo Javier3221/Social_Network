@@ -17,7 +17,7 @@ namespace Social_Network.Infrastructure.Persistence.Contexts
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UserViewModel _saveUserViewModel;
-
+        
         public ApplicationContext(DbContextOptions<ApplicationContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
         {
             _httpContextAccessor = httpContextAccessor;
