@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Social_Network.Core.Application.Interfaces.Services;
 using Social_Network.Models;
 using System;
 using System.Collections.Generic;
@@ -12,20 +13,26 @@ namespace Social_Network.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IPostService _postService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IPostService postService)
         {
             _logger = logger;
+            _postService = postService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            if (TempData["error"] != null)
+            if (TempData["postError"] != null)
             {
-                ViewBag.Error = TempData["error"].ToString();
+                ViewBag.PostError = TempData["postError"].ToString();
             }
-            
-            return View();
+            else if (TempData["commentError"] != null)
+            {
+                ViewBag.CommentError = TempData["commentError"].ToString();
+            }
+
+            return View(await _postService.GetAllUserPosts());
         }
 
         public IActionResult Privacy()
