@@ -62,25 +62,25 @@ namespace Social_Network.Infrastructure.Persistence.Contexts
                 .HasMany<Friend>(g => g.Friends)
                 .WithOne(s => s.User)
                 .HasForeignKey(s => s.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<User>()
                 .HasMany<Friend>(g => g.FriendWith)
                 .WithOne(s => s.UserFriend)
                 .HasForeignKey(g => g.FriendsWith)
-                .OnDelete(DeleteBehavior.ClientNoAction);
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<User>()
                 .HasMany<Post>(s => s.Posts)
                 .WithOne(g => g.User)
                 .HasForeignKey(s => s.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Post>()
                 .HasMany<Commentary>(s => s.Commentaries)
                 .WithOne(g => g.Post)
                 .HasForeignKey(s => s.PostId)
-                .OnDelete(DeleteBehavior.ClientNoAction);
+                .OnDelete(DeleteBehavior.Cascade);
             #endregion
 
             #region Configuration
