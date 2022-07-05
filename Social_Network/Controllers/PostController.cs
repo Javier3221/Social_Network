@@ -39,13 +39,13 @@ namespace Social_Network.Controllers
                savePostVm = await _postService.Add(savePostVm);
                 if (savePostVm != null && savePostVm.Id != 0 && postImage != null)
                 {
-                    savePostVm.ImgUrl = UploadImages.UploadFile(new List<IFormFile> { postImage }, savePostVm.Id, "Posts");
+                    savePostVm.ImgUrl = UploadImages.UploadFile(savePostVm.Id, "Posts", new List<IFormFile> { postImage });
                     await _postService.Update(savePostVm, savePostVm.Id);
                 }
             }
             else
             {
-                TempData["error"] = "You need to write something before posting this";
+                TempData["postError"] = "You need to write something before posting this";
             }
 
             return RedirectToRoute(new { controller="Home", action="Index"});
