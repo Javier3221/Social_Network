@@ -50,5 +50,45 @@ namespace Social_Network.Controllers
 
             return RedirectToRoute(new { controller="Home", action="Index"});
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(int id, string description, IFormFile postImage = null)
+        {
+            if (!_validateUserSession.HasUser())
+            {
+                return RedirectToRoute(new { controller = "User", action = "Login" });
+            }
+
+            if (description != null)
+            {
+                SavePostViewModel savePostVm = new();
+                savePostVm.Id = id;
+                savePostVm.PostDescription = description;
+                savePostVm.PostImage = postImage;
+
+                SavePostViewModel saveVm = await _postService.GetByIdSaveViewModel(id);
+                savePostVm.ImgUrl = UploadImages.UploadFile(saveVm.Id, "Posts", new List<IFormFile> { postImage }, true, saveVm.ImgUrl);
+
+                await _postService.Update(savePostVm, savePostVm.Id);
+            }
+            else
+            {
+                TempData["postError"] = "You need to write something before posting this";
+            }
+
+            return RedirectToRoute(new { controller = "Home", action = "Index" });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (!_validateUserSession.HasUser())
+            {
+                return RedirectToRoute(new { controller = "User", action = "Login" });
+            }
+
+            await _postService.Delete(id);
+            return RedirectToRoute(new { controller = "Home", action = "Index" });
+        }
     }
 }
