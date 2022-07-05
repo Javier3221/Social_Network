@@ -14,6 +14,7 @@ namespace Social_Network.Core.Application.ViewModels.Post
         public string PostDescription { get; set; }
         public string ImgUrl { get; set; }
         public int UserId { get; set; }
+        public DateTime DateCreated { get; set; }
 
         public UserViewModel User { get; set; }
         public ICollection<CommentaryViewModel> Commentaries { get; set; }
