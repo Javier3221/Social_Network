@@ -23,7 +23,7 @@ namespace Social_Network.Core.Application.Mappings
 
             CreateMap<PostViewModel, Post>()
                 .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
-                .ForMember(dest => dest.DateCreated, opt => opt.Ignore());
+                .ReverseMap();
 
             CreateMap<Post, SavePostViewModel>()
                 .ForMember(dest => dest.PostImage, opt => opt.Ignore())
@@ -35,11 +35,13 @@ namespace Social_Network.Core.Application.Mappings
 
             CreateMap<FriendViewModel, Friend>()
                 .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
-                .ForMember(dest => dest.DateCreated, opt => opt.Ignore());
+                .ForMember(dest => dest.DateCreated, opt => opt.Ignore())
+                .ReverseMap();
 
             CreateMap<CommentaryViewModel, Commentary>()
                 .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
-                .ForMember(dest => dest.DateCreated, opt => opt.Ignore());
+                .ForMember(dest => dest.DateCreated, opt => opt.Ignore())
+                .ReverseMap();
         }
     }
 }
