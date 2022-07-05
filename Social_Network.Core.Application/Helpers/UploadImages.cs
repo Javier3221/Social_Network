@@ -10,14 +10,19 @@ namespace Social_Network.Core.Application.Helpers
 {
     public static class UploadImages
     {
-        public static string UploadFile(List<IFormFile> files, int id, string folderName, bool isEditMode = false, string imageUrls = "")
+        public static string UploadFile(int id, string folderName, List<IFormFile> files, bool isEditMode = false, string imageUrls = "")
         {
-            if (isEditMode && files == null)
+            if (isEditMode && files[0] == null)
             {
                 string paths = string.Join(",", imageUrls);
 
                 return paths;
             }
+            else if (files[0] == null)
+            {
+                return null;
+            }
+
             string basePath = $"/images/{folderName}/{id}";
             string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot{basePath}");
 
@@ -46,7 +51,7 @@ namespace Social_Network.Core.Application.Helpers
 
             string pathString = string.Join(",", pathList);
 
-            if (isEditMode)
+            if (isEditMode && imageUrls != null)
             {
                 List<string> oldPath = imageUrls.Split(',').ToList();
 
