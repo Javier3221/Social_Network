@@ -12,6 +12,7 @@
     <title>@ViewData["Title"] - Social_Network</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <script src="/js/site.js" asp-append-version="true" defer></script>
 </head>
 <body>
     <header>
@@ -30,7 +31,7 @@
                                 <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Friends</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Friend" asp-action="Index">Friends</a>
                             </li>
                         </ul>
 
@@ -60,7 +61,6 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
