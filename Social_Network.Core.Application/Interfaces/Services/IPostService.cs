@@ -10,5 +10,7 @@ namespace Social_Network.Core.Application.Interfaces.Services
 {
     public interface IPostService : IGenericService<SavePostViewModel, PostViewModel, Post>
     {
+        Task<List<PostViewModel>> GetAllViewModelWithInclude();
+        Task<List<PostViewModel>> GetAllUserPosts();
     }
 }
