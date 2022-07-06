@@ -18,7 +18,10 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3" style="background-color: #3b5998">
             <div class="container">
-                <a class="navbar-brand text-light" asp-controller="@(user != null ? "Home" : "User")" asp-action="@(user != null ? "Index" : "Login")">ProgNet</a>
+                <div>
+                    <img class="rounded-circle overflow-auto me-2" src="/poro_icon.jpg" width="64" height="64" />
+                </div>
+                <a class="navbar-brand text-light" asp-controller="@(user != null ? "Home" : "User")" asp-action="@(user != null ? "Index" : "Login")">Poro Net</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -28,10 +31,10 @@
                     {
                         <ul class="navbar-nav flex-fill">
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                <a class="nav-link text-light" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Friend" asp-action="Index">Friends</a>
+                                <a class="nav-link text-light" asp-controller="Friend" asp-action="Index">Friends</a>
                             </li>
                         </ul>
 
