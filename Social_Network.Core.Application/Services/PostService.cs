@@ -71,7 +71,52 @@ namespace Social_Network.Core.Application.Services
         {
             var postList = await GetAllViewModelWithInclude();
 
-            return postList.Where(post => post.UserId == currentUserId).ToList();
+            return postList.Where(post => post.UserId == currentUser.Id).ToList();
+        }
+
+        public async Task<List<PostViewModel>> GetAllFriendPosts()
+        {
+            var postList = await GetAllViewModelWithInclude();
+
+            List<PostViewModel> friendPostList = new();
+            UserViewModel user = await _userService.GetByIdWithInclude(currentUser.Id);
+
+            foreach (FriendViewModel friend in user.Friends)
+            {
+                if (friend.UserId == user.Id)
+                {
+                    friendPostList.AddRange(
+                    postList.Where(elem => elem.UserId == friend.FriendsWith)
+                    );
+                }
+                else
+                {
+                    friendPostList.AddRange(
+                    postList.Where(elem => elem.UserId == friend.UserId)
+                    );
+                }
+            }
+
+            foreach (FriendViewModel friend in user.FriendWith)
+            {
+                if (friend.UserId == user.Id)
+                {
+                    friendPostList.AddRange(
+                    postList.Where(elem => elem.UserId == friend.FriendsWith)
+                    );
+                }
+                else
+                {
+                    friendPostList.AddRange(
+                    postList.Where(elem => elem.UserId == friend.UserId)
+                    );
+                }
+            }
+
+            List<PostViewModel> sortedList = friendPostList.OrderByDescending(x => x.DateCreated)
+                .ToList();
+
+            return sortedList;
         }
     }
 }

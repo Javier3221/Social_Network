@@ -12,5 +12,6 @@ namespace Social_Network.Core.Application.Interfaces.Services
     {
         Task<List<PostViewModel>> GetAllViewModelWithInclude();
         Task<List<PostViewModel>> GetAllUserPosts();
+        Task<List<PostViewModel>> GetAllFriendPosts();
     }
 }
