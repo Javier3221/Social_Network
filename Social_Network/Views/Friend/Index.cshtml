@@ -1,0 +1,219 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using Social_Network.Core.Application.Helpers;
+@using Social_Network.Core.Application.ViewModels.User;
+@using Social_Network.Core.Application.ViewModels.Post;
+@using Social_Network.Core.Application.ViewModels.Commentary;
+@using Social_Network.Core.Application.ViewModels.Friend;
+@inject IHttpContextAccessor httpContextAccessor;
+@model List<PostViewModel>;
+@{ UserViewModel user = httpContextAccessor.HttpContext.Session.Get<UserViewModel>("user"); }
+@{
+    ViewData["Title"] = "Friends Posts";
+    List<FriendViewModel> friends = ViewData["Friends"] as List<FriendViewModel>;
+}
+
+<div class="row">
+    <div class="col-7">
+        @if (Model.Count > 0)
+        {
+            @foreach (PostViewModel post in Model)
+            {
+                <div class="row d-flex justify-content-center">
+                    <div class="card mb-3">
+                        <div class="card-header border-0 pb-0">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-2">
+                                            <img class="rounded-circle border-dark" src="@post.User.ProfileImgUrl" width="64" height="64" alt="">
+                                        </div>
+                                        <div>
+                                            <div class="nav nav-divider">
+                                                <h6 class="nav-item card-title mb-0"> <ins class="text-info">@post.User.UserName</ins></h6>
+                                            </div>
+                                            <p class="mb-0 small">Published: @(post.DateCreated.ToString("dd/M/yyyy hh:mm tt"))</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p>@post.PostDescription</p>
+                            @if (post.ImgUrl != null && post.ImgUrl != "")
+                            {
+                                <img class="card-img d-block m-auto border-dark" src="@post.ImgUrl" alt="Post" style="max-height: 240px" />
+                            }
+                        </div>
+                        <div class="d-flex mb-3">
+                            <div class="me-2 ms-2">
+                                <img class="rounded-circle border-dark" src="@user.ProfileImgUrl" width="32" height="32" alt="">
+                            </div>
+                            <form class="w-100 me-1" asp-controller="Commentary" asp-action="Create" method="post" asp-route-postId="@post.Id" asp-route-isFriend="@true">
+                                <div class="input-group">
+                                    <textarea name="description" data-autoresize class="form-control pe-4 bg-light" rows="1" placeholder="Add a comment..."></textarea>
+                                    <button type="submit" class="btn btn-outline-success">Post</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="p-3">
+                            <ul class="comment-wrap list-unstyled">
+                                @if (post.Commentaries != null)
+                                {
+                                    if (post.Commentaries.Count != 0)
+                                    {
+                                        @foreach (CommentaryViewModel commentary in post.Commentaries)
+                                        {
+                                            <li class="comment-item mb-2">
+                                                <div class="d-flex position-relative">
+                                                    <div>
+                                                        <img class="avatar-img rounded-circle border-dark" width="32" height="32" src="@commentary.User.ProfileImgUrl" alt="">
+                                                    </div>
+                                                    <div class="ms-2">
+                                                        <div class="bg-dark bg-opacity-25 rounded-start-top-0 p-3 rounded">
+                                                            <div class="d-flex justify-content-between">
+                                                                <h6 class="mb-1"> <ins class="text-primary"> @commentary.User.UserName </ins></h6>
+                                                                <small class="ms-2">5hr</small>
+                                                            </div>
+                                                            <p class="small mb-0">@commentary.Description</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <li class="comment-item d-flex justify-content-center">
+                                        <p class="text-muted">There are no commentaries in this post</p>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="d-flex justify-content-center">
+                <h2>You have no posts yet</h2>
+            </div>
+        }
+
+    </div>
+    <div class="col-3 border-dark ms-auto">
+        <div class="d-flex justify-content-center mb-3">
+            <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addFriend">Add a new friend</button>
+        </div>
+        @if (ViewBag.Error != null)
+        {
+            <p class="text-danger">@ViewBag.Error</p>
+        }
+        <h2>Your Friends</h2>
+        @if (friends.Count > 0)
+        {
+            @foreach (FriendViewModel friend in friends)
+            {
+                if (friend.UserId == user.Id)
+                {
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center align-items-center mb-2">
+                                <img class="rounded-circle me-4" width="64" height="64" src="@friend.UserFriend.ProfileImgUrl" />
+                                <h5 class="text-info">@friend.UserFriend.Name @friend.UserFriend.LastName (@friend.UserFriend.UserName)</h5>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#removeFriend@(friend.Id)">Remove Friend</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="removeFriend@(friend.Id)" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="removeFriendLabel@(friend.Id)">Delete Post</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <h3>Are you sure you want to end your friendship with "@(friend.UserFriend.UserName)"?</h3>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No wait!</button>
+                                    <form asp-controller="Friend" asp-action="Delete" asp-route-id="@(friend.Id)" method="post">
+                                        <button class="btn btn-primary" type="submit">Yes, end it</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else if (friend.FriendsWith == user.Id)
+                {
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center align-items-center mb-2">
+                                <img class="rounded-circle me-4" width="64" height="64" src="@friend.User.ProfileImgUrl" />
+                                <h5 class="text-info">@friend.User.Name @friend.User.LastName (@friend.User.UserName)</h5>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#removeFriend@(friend.Id)">Remove Friend</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="removeFriend@(friend.Id)" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="removeFriendLabel@(friend.Id)">Delete Post</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <h3>Are you sure you want to end your friendship with "@(friend.User.UserName)"?</h3>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No wait!</button>
+                                    <form asp-controller="Friend" asp-action="Delete" asp-route-id="@(friend.Id)" method="post">
+                                        <button class="btn btn-primary" type="submit">Yes, end it</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        }
+        else
+        {
+            <div>
+                <p>You have no friends yet.</p>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="addFriend" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addFriendLabel">Add a friend</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-controller="Friend" asp-action="Create" asp-route-userId="@user.Id" asp-route-userName="@user.UserName" method="post">
+                <div class="modal-body">
+                    <label class="form-label">User Name:</label>
+                    <div class="input-group">
+                        <input class="form-control" name="friendUserName"/>
+                        <button type="submit" class="btn btn-outline-primary">Search</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Go back</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
