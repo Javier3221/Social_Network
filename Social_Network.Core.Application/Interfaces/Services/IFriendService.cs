@@ -10,5 +10,6 @@ namespace Social_Network.Core.Application.Interfaces.Services
 {
     public interface IFriendService : IGenericService<FriendViewModel, FriendViewModel, Friend>
     {
+        Task<List<FriendViewModel>> GetAllViewModelWithInclude();
     }
 }
