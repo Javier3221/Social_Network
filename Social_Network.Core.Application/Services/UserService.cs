@@ -48,6 +48,14 @@ namespace Social_Network.Core.Application.Services
             return await _repository.FindUserNameAvailabilty(userName);
         }
 
+        public async Task<UserViewModel> FindUserByUserName(string userName)
+        {
+            UserViewModel userVm = _mapper.Map<UserViewModel>(await _repository.FindUserByUserName(userName));
+            UserViewModel withIncludes = await GetByIdWithInclude(userVm.Id);
+            userVm.FriendUserNames = withIncludes.FriendUserNames;
+            return userVm;
+        }
+
         public async Task<List<UserViewModel>> GetAllViewModelWithInclude()
         {
             var userList = await _repository.GetAllWithIncludeAsync(new List<string> { "Friends" });
