@@ -19,7 +19,7 @@ namespace Social_Network.Controllers
             _commentaryService = commentaryService;
             _validateUserSession = validateUserSession;
         }
-        public async Task<IActionResult> Create(string description, int postId)
+        public async Task<IActionResult> Create(string description, int postId, bool isFriend = false)
         {
             if (!_validateUserSession.HasUser())
             {
@@ -37,6 +37,11 @@ namespace Social_Network.Controllers
             else
             {
                 TempData["commentError"] = "You need to write something before posting a comment";
+            }
+
+            if (isFriend)
+            {
+                return RedirectToRoute(new { controller = "Friend", action = "Index" });
             }
 
             return RedirectToRoute(new { controller = "Home", action = "Index" });
