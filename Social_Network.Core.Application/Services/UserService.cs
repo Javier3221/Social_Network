@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Social_Network.Core.Application.Interfaces.Repositories;
 using Social_Network.Core.Application.Interfaces.Services;
+using Social_Network.Core.Application.ViewModels.Friend;
 using Social_Network.Core.Application.ViewModels.User;
 using Social_Network.Core.Domain.Entities;
 using System;
@@ -71,6 +72,42 @@ namespace Social_Network.Core.Application.Services
                 ActivatedAccount = user.ActivatedAccount,
                 UserName = user.UserName
             }).ToList();
+        }
+
+        public async Task<UserViewModel> GetByIdWithInclude(int id)
+        {
+            var userList = await _repository.GetAllWithIncludeAsync(new List<string> { "Friends", "FriendWith" });
+
+            UserViewModel user = _mapper.Map<UserViewModel>(userList.FirstOrDefault(user => user.Id == id));
+            user.FriendUserNames = new();
+            List<FriendViewModel> friends = user.Friends as List<FriendViewModel>;
+            List<FriendViewModel> friendWith = user.FriendWith as List<FriendViewModel>;
+
+            for (int i = 0; i < friends.Count; i++)
+            {
+                if (user.Id == friends[i].UserId)
+                {
+                    user.FriendUserNames.Add(friends[i].UserFriend.UserName);
+                }
+                else
+                {
+                    user.FriendUserNames.Add(friends[i].User.UserName);
+                }
+            }
+
+            for (int i = 0; i < friendWith.Count; i++)
+            {
+                if (user.Id == friendWith[i].UserId)
+                {
+                    user.FriendUserNames.Add(friendWith[i].UserFriend.UserName);
+                }
+                else
+                {
+                    user.FriendUserNames.Add(friendWith[i].User.UserName);
+                }
+            }
+
+            return user;
         }
     }
 }

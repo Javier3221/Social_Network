@@ -14,5 +14,6 @@ namespace Social_Network.Core.Application.Interfaces.Services
         Task<bool> FindUserNameAvailabilty(string userName);
         Task<List<UserViewModel>> GetAllViewModelWithInclude();
         Task<UserViewModel> FindUserByUserName(string userName);
+        Task<UserViewModel> GetByIdWithInclude(int id);
     }
 }
