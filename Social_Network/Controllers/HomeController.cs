@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Social_Network.Core.Application.Interfaces.Services;
 using Social_Network.Models;
+using Social_Network.Models.Middlewares;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,15 +15,22 @@ namespace Social_Network.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IPostService _postService;
+        private readonly ValidateUserSession _validateUserSession;
 
-        public HomeController(ILogger<HomeController> logger, IPostService postService)
+        public HomeController(ILogger<HomeController> logger, IPostService postService, ValidateUserSession validateUserSession)
         {
             _logger = logger;
             _postService = postService;
+            _validateUserSession = validateUserSession;
         }
 
         public async Task<IActionResult> Index()
         {
+            if (!_validateUserSession.HasUser())
+            {
+                return RedirectToRoute(new { controller = "User", action = "Login" });
+            }
+
             if (TempData["postError"] != null)
             {
                 ViewBag.PostError = TempData["postError"].ToString();
@@ -33,11 +41,6 @@ namespace Social_Network.Controllers
             }
 
             return View(await _postService.GetAllUserPosts());
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
