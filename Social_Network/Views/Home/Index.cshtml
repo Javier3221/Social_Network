@@ -88,7 +88,7 @@
                                         <div class="nav nav-divider">
                                             <h6 class="nav-item card-title mb-0"> <ins class="text-info">@post.User.UserName</ins></h6>
                                         </div>
-                                        <p class="mb-0 small">Date published: @($"{post.DateCreated.Day}/{post.DateCreated.Month}/{post.DateCreated.Year}")</p>
+                                        <p class="mb-0 small">Date published: @(post.DateCreated.ToString("dd/M/yyyy hh:mm tt"))</p>
                                     </div>
                                 </div>
                             </div>
