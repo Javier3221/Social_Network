@@ -11,7 +11,8 @@ namespace Social_Network.Core.Application.Mappings
     {
         public GeneralProfile()
         {
-            CreateMap<User, UserViewModel>();
+            CreateMap<User, UserViewModel>()
+                .ForMember(dest => dest.FriendUserNames, opt => opt.Ignore());
 
             CreateMap<SaveUserViewModel, User>()
                 .ForMember(dest => dest.Posts, opt => opt.Ignore())

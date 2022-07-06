@@ -18,6 +18,7 @@ namespace Social_Network.Core.Application.ViewModels.User
         public string Email { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
+        public List<string> FriendUserNames { get; set; }
         public bool ActivatedAccount { get; set; }
 
         public ICollection<FriendViewModel> Friends { get; set; }
