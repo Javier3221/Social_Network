@@ -4,6 +4,7 @@ using Social_Network.Core.Application.Helpers;
 using Social_Network.Core.Application.Interfaces.Repositories;
 using Social_Network.Core.Application.Interfaces.Services;
 using Social_Network.Core.Application.ViewModels.Commentary;
+using Social_Network.Core.Application.ViewModels.Friend;
 using Social_Network.Core.Application.ViewModels.Post;
 using Social_Network.Core.Application.ViewModels.User;
 using Social_Network.Core.Domain.Entities;
@@ -18,21 +19,23 @@ namespace Social_Network.Core.Application.Services
     public class PostService : GenericService<SavePostViewModel, PostViewModel, Post> ,IPostService
     {
         private readonly IPostRepository _repository;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly int currentUserId;
+        private readonly UserViewModel currentUser;
 
-        public PostService(IPostRepository postRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(postRepository, mapper)
+        public PostService(IPostRepository postRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor, IUserService userService) : base(postRepository, mapper)
         {
             _repository = postRepository;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
-            currentUserId = _httpContextAccessor.HttpContext.Session.Get<UserViewModel>("user").Id;
+            _userService = userService;
+            currentUser = _httpContextAccessor.HttpContext.Session.Get<UserViewModel>("user");
         }
 
         public override async Task<SavePostViewModel> Add(SavePostViewModel saveVm)
         {
-            saveVm.UserId = currentUserId;
+            saveVm.UserId = currentUser.Id;
 
             return await base.Add(saveVm);
         }
@@ -46,7 +49,7 @@ namespace Social_Network.Core.Application.Services
 
         public async Task<List<PostViewModel>> GetAllViewModelWithInclude()
         {
-            var entityList = await _repository.GetAllWithIncludeAsync(new List<string> { "User", "Commentaries", "Friends" });
+            var entityList = await _repository.GetAllWithIncludeAsync(new List<string> { "User", "Commentaries" });
 
             List<PostViewModel> postList = entityList.Select(post => new PostViewModel
             {
@@ -59,9 +62,7 @@ namespace Social_Network.Core.Application.Services
                 DateCreated = post.DateCreated
             }).ToList();
 
-            List<PostViewModel> sortedList = postList.OrderBy(x => x.DateCreated.Year)
-                .ThenBy(x => x.DateCreated.Month)
-                .ThenBy(x => x.DateCreated.Day)
+            List<PostViewModel> sortedList = postList.OrderByDescending(x => x.DateCreated)
                 .ToList();
 
             return sortedList;
