@@ -49,6 +49,12 @@ namespace Social_Network.Controllers
             UserViewModel userVm = await _userService.Login(loginVm);
             if (userVm != null)
             {
+                if (userVm.ActivatedAccount == false)
+                {
+                    ModelState.AddModelError("userValidation", "You need to activate your account before Logging in. Check your email for the activation link.");
+                    return View(loginVm);
+                }
+
                 HttpContext.Session.Set<UserViewModel>("user", userVm);
                 return RedirectToRoute(new { controller = "Home", action = "Index" });
             }
