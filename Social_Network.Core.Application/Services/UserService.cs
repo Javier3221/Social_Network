@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Social_Network.Core.Application.DTOs.Email;
 using Social_Network.Core.Application.Interfaces.Repositories;
 using Social_Network.Core.Application.Interfaces.Services;
 using Social_Network.Core.Application.ViewModels.Friend;
@@ -16,16 +17,26 @@ namespace Social_Network.Core.Application.Services
     {
         private readonly IUserRepository _repository;
         private readonly IMapper _mapper;
+        private readonly IEmailService _emailService;
 
-        public UserService(IUserRepository repo, IMapper mapper) : base(repo, mapper)
+        public UserService(IUserRepository repo, IMapper mapper, IEmailService emailService) : base(repo, mapper)
         {
             _repository = repo;
             _mapper = mapper;
+            _emailService = emailService;
         }
 
         public override async Task<SaveUserViewModel> Add(SaveUserViewModel vm)
         {
             vm.ActivatedAccount = false;
+            string localUrl = "https://localhost:44391/User/ActivateAccount/";
+            await _emailService.SendAsync(new EmailRequest
+            {
+                To = vm.Email,
+                Subject = "Welcome to PoroNet",
+                Body = $"<h1>Welcome to PoroNet</h1> <p>We're really glad you chose us \"{vm.UserName}\"</p>" +
+                $"<br/><a href='{localUrl}'>Click this link to activate your account</a>"
+            });
 
             return await base.Add(vm);
         }
