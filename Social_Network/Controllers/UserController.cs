@@ -154,5 +154,28 @@ namespace Social_Network.Controllers
             ViewBag.isPost = true;
             return View();
         }
+
+        public IActionResult RestorePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RestorePassword(string userName)
+        {
+            UserViewModel user = await _userService.FindUserByUserName(userName);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("userNameVerification", "This User Name doesn't exist.");
+            }
+            else
+            {
+                await _userService.ChangePassword(user);
+                ViewBag.isPost = true;
+            }
+
+            return View();
+        }
     }
 }
