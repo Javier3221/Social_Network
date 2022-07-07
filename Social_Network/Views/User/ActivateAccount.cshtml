@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Activate Account";
+
+    bool isPost = false;
+
+    if (ViewBag.isPost != null)
+    {
+        isPost = ViewBag.isPost;
+    }
+}
+
+@if (!isPost)
+{
+    <div class="mt-3">
+        <div class="d-flex justify-content-center">
+            <h2>Activate Account</h2>
+        </div>
+        <div class="mt-3">
+            <form asp-controller="User" asp-action="ActivateAccount" method="post">
+                <div>
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                    <label class="form-label">Write your email account in here:</label>
+                    <input name="email" class="form-control" placeholder="youremail@hotmail.com" />
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-outline-info" type="submit">Activate</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="mt-3 d-flex flex-column align-items-center">
+        <h1>Your account has been activated</h1>
+        <a asp-controller="User" asp-action="Login">Click this link to Log in</a>
+    </div>
+}
