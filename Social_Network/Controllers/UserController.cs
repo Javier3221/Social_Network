@@ -90,9 +90,21 @@ namespace Social_Network.Controllers
                 return View(UserVm);
             }
 
-            bool isAvailable = await _userService.FindUserNameAvailabilty(UserVm.UserName);
+            bool nameIsAvailable = await _userService.FindUserNameAvailabilty(UserVm.UserName);
+            SaveUserViewModel emailVerification = await _userService.FindUserByEmail(UserVm.Email);
 
-            if (!isAvailable)
+            if (!nameIsAvailable && emailVerification != null) 
+            {
+                ModelState.AddModelError("userNameValidation", "This User Name exists already");
+                ModelState.AddModelError("emailVerification", "This email is already in use. Choose another one");
+                return View(UserVm);
+            }
+            else if (emailVerification != null)
+            {
+                ModelState.AddModelError("emailVerification", "This email is already in use. Choose another one");
+                return View(UserVm);
+            }
+            else if (!nameIsAvailable)
             {
                 ModelState.AddModelError("userNameValidation", "This User Name exists already");
                 return View(UserVm);
