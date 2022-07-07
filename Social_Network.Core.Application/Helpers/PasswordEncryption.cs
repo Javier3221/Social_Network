@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Social_Network.Core.Application.Helpers
 {
-    public class PasswordEncryption
+    public static class PasswordEncryption
     {
         public static string ComputeSha256Hash(string password)
         {
