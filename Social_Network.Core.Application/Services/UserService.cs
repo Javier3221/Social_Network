@@ -123,5 +123,33 @@ namespace Social_Network.Core.Application.Services
             user.ActivatedAccount = true;
             await Update(user, user.Id);
         }
+
+        public async Task ChangePassword(UserViewModel user)
+        {
+            #region Generate new random password
+            Random rnd = new Random();
+            StringBuilder builder = new();
+            char ch;
+
+            for (int i = 0; i < 6; i++)
+            {
+                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * rnd.NextDouble() + 65)));
+                builder.Append(ch);
+            }
+            #endregion
+
+            SaveUserViewModel saveVm = _mapper.Map<SaveUserViewModel>(user);
+            saveVm.Password = PasswordEncryption.ComputeSha256Hash(builder.ToString());
+
+            await Update(saveVm, saveVm.Id);
+            string localUrl = "https://localhost:44391/User/Login/";
+            await _emailService.SendAsync(new EmailRequest
+            {
+                To = user.Email,
+                Subject = "Password Change",
+                Body = $"<h1>Hi {saveVm.UserName}!</h1> <p>Your password was changed successfully</p>" +
+                $"<br/><p>Your new password is: <strong>{builder.ToString()}</strong></p> <a href='{localUrl}'>Follow this link to Log in</a>"
+            });
+        }
     }
 }

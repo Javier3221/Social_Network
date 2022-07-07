@@ -17,5 +17,6 @@ namespace Social_Network.Core.Application.Interfaces.Services
         Task<UserViewModel> GetByIdWithInclude(int id);
         Task<SaveUserViewModel> FindUserByEmail(string email);
         Task ActivateAccount(SaveUserViewModel user);
+        Task ChangePassword(UserViewModel user);
     }
 }
