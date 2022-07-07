@@ -66,19 +66,9 @@ namespace Social_Network.Core.Application.Services
 
         public async Task<List<UserViewModel>> GetAllViewModelWithInclude()
         {
-            var userList = await _repository.GetAllWithIncludeAsync(new List<string> { "Friends" });
+            List<UserViewModel> userList = _mapper.Map<List<UserViewModel>>(await _repository.GetAllWithIncludeAsync(new List<string> { "Friends" }));
 
-            return userList.Select(user => new UserViewModel 
-            {
-                Name = user.Name,
-                LastName = user.LastName,
-                Phone = user.Phone,
-                Password = user.Password,
-                ProfileImgUrl = user.ProfileImgUrl,
-                Email = user.Email,
-                ActivatedAccount = user.ActivatedAccount,
-                UserName = user.UserName
-            }).ToList();
+            return userList;
         }
 
         public async Task<UserViewModel> GetByIdWithInclude(int id)
