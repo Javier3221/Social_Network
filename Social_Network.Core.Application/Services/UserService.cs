@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Social_Network.Core.Application.DTOs.Email;
+using Social_Network.Core.Application.Helpers;
 using Social_Network.Core.Application.Interfaces.Repositories;
 using Social_Network.Core.Application.Interfaces.Services;
 using Social_Network.Core.Application.ViewModels.Friend;
@@ -63,9 +64,14 @@ namespace Social_Network.Core.Application.Services
         public async Task<UserViewModel> FindUserByUserName(string userName)
         {
             UserViewModel userVm = _mapper.Map<UserViewModel>(await _repository.FindUserByUserName(userName));
-            UserViewModel withIncludes = await GetByIdWithInclude(userVm.Id);
-            userVm.FriendUserNames = withIncludes.FriendUserNames;
-            return userVm;
+            if (userVm != null)
+            {
+                UserViewModel withIncludes = await GetByIdWithInclude(userVm.Id);
+                userVm.FriendUserNames = withIncludes.FriendUserNames;
+                return userVm;
+            }
+
+            return null;
         }
 
         public async Task<SaveUserViewModel> FindUserByEmail(string email)
