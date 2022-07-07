@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Social_Network.Infrastructure.Persistence;
 using Social_Network.Core.Application;
 using Social_Network.Models.Middlewares;
+using Social_Network.Infrastructure.Shared;
 
 namespace Social_Network
 {
@@ -30,6 +31,8 @@ namespace Social_Network
             services.AddControllersWithViews();
 
             services.AddPersistenceInfrastructure(Configuration);
+
+            services.AddSharedInfrastructure(Configuration);
 
             services.AddApplicationLayer(Configuration);
 

@@ -33,6 +33,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Social_Network.Core.Application\Social_Network.Core.Application.csproj" />
     <ProjectReference Include="..\Social_Network.Infrastructure.Persistence\Social_Network.Infrastructure.Persistence.csproj" />
+    <ProjectReference Include="..\Social_Network.Infrastructure.Shared\Social_Network.Infrastructure.Shared.csproj" />
   </ItemGroup>
 
 </Project>
