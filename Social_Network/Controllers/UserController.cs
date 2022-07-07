@@ -27,6 +27,7 @@ namespace Social_Network.Controllers
         {
             if (_validateUserSession.HasUser())
             {
+                ModelState.AddModelError("SecurityError", "You can't access this link while logged in. Log out first");
                 return RedirectToRoute(new { controller = "Home", action = "Index" });
             }
 
@@ -68,12 +69,24 @@ namespace Social_Network.Controllers
 
         public IActionResult LogOut()
         {
+            if (!_validateUserSession.HasUser())
+            {
+                ModelState.AddModelError("SecurityError", "You have no permission to access this link. Log in First");
+                return RedirectToRoute(new { controller = "User", action = "Login" });
+            }
+
             HttpContext.Session.Remove("user");
             return RedirectToRoute(new { controller = "User", action = "Login" });
         }
 
         public IActionResult Register()
         {
+            if (_validateUserSession.HasUser())
+            {
+                ModelState.AddModelError("SecurityError", "You can't access this link while logged in. Log out first");
+                return RedirectToRoute(new { controller = "Home", action = "Index" });
+            }
+
             return View(new SaveUserViewModel());
         }
 
@@ -82,6 +95,7 @@ namespace Social_Network.Controllers
         {
             if (_validateUserSession.HasUser())
             {
+                ModelState.AddModelError("SecurityError", "You can't access this link while logged in. Log out first");
                 return RedirectToRoute(new { controller = "Home", action = "Index" });
             }
 

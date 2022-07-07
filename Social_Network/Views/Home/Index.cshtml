@@ -105,7 +105,7 @@
                             <img class="card-img d-block m-auto border-dark" src="@post.ImgUrl" alt="Post" style="max-height: 240px" />
                         }
                         <div class="visually-hidden update-block @(post.Id)">
-                            <form method="post" enctype="multipart/form-data" asp-controller="Post" asp-action="Update" asp-route-id="@post.Id">
+                            <form method="post" enctype="multipart/form-data" asp-controller="Post" asp-action="Update" asp-route-id="@post.Id" asp-route-dateCreated="@post.DateCreated">
                                 <hr />
                                 <div class="d-flex justify-content-between">
                                     <div>
@@ -153,7 +153,6 @@
                                                     <div class="bg-dark bg-opacity-25 rounded-start-top-0 p-3 rounded">
                                                         <div class="d-flex justify-content-between">
                                                             <h6 class="mb-1"> <ins class="text-primary"> @commentary.User.UserName </ins></h6>
-                                                            <small class="ms-2">5hr</small>
                                                         </div>
                                                         <p class="small mb-0">@commentary.Description</p>
                                                     </div>

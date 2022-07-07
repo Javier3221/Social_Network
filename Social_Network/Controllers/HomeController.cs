@@ -28,6 +28,7 @@ namespace Social_Network.Controllers
         {
             if (!_validateUserSession.HasUser())
             {
+                ModelState.AddModelError("SecurityError", "You have no permission to access this link. Log in First");
                 return RedirectToRoute(new { controller = "User", action = "Login" });
             }
 
@@ -41,12 +42,6 @@ namespace Social_Network.Controllers
             }
 
             return View(await _postService.GetAllUserPosts());
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

@@ -27,7 +27,8 @@ namespace Social_Network.Controllers
         {
             if (!_validateUserSession.HasUser())
             {
-                return RedirectToRoute(new { controller="User", action="Login"});
+                ModelState.AddModelError("SecurityError", "You have no permission to access this link. Log in First");
+                return RedirectToRoute(new { controller = "User", action = "Login" });
             }
 
             SavePostViewModel savePostVm = new();
@@ -52,10 +53,11 @@ namespace Social_Network.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(int id, string description, IFormFile postImage = null)
+        public async Task<IActionResult> Update(int id, string description, DateTime dateCreated, IFormFile postImage = null)
         {
             if (!_validateUserSession.HasUser())
             {
+                ModelState.AddModelError("SecurityError", "You have no permission to access this link. Log in First");
                 return RedirectToRoute(new { controller = "User", action = "Login" });
             }
 
@@ -65,6 +67,7 @@ namespace Social_Network.Controllers
                 savePostVm.Id = id;
                 savePostVm.PostDescription = description;
                 savePostVm.PostImage = postImage;
+                savePostVm.DateCreated = dateCreated;
 
                 SavePostViewModel saveVm = await _postService.GetByIdSaveViewModel(id);
                 savePostVm.ImgUrl = UploadImages.UploadFile(saveVm.Id, "Posts", new List<IFormFile> { postImage }, true, saveVm.ImgUrl);
@@ -84,6 +87,7 @@ namespace Social_Network.Controllers
         {
             if (!_validateUserSession.HasUser())
             {
+                ModelState.AddModelError("SecurityError", "You have no permission to access this link. Log in First");
                 return RedirectToRoute(new { controller = "User", action = "Login" });
             }
 

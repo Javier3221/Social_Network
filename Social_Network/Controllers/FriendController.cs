@@ -27,6 +27,7 @@ namespace Social_Network.Controllers
         {
             if (!_validateUserSession.HasUser())
             {
+                ModelState.AddModelError("SecurityError", "You have no permission to access this link. Log in First");
                 return RedirectToRoute(new { controller = "User", action = "Login" });
             }
 
@@ -42,6 +43,7 @@ namespace Social_Network.Controllers
         {
             if (!_validateUserSession.HasUser())
             {
+                ModelState.AddModelError("SecurityError", "You have no permission to access this link. Log in First");
                 return RedirectToRoute(new { controller = "User", action = "Login" });
             }
 
@@ -75,6 +77,7 @@ namespace Social_Network.Controllers
         {
             if (!_validateUserSession.HasUser())
             {
+                ModelState.AddModelError("SecurityError", "You have no permission to access this link. Log in First");
                 return RedirectToRoute(new { controller = "User", action = "Login" });
             }
 
