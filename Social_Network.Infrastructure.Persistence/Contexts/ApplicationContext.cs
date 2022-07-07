@@ -33,8 +33,11 @@ namespace Social_Network.Infrastructure.Persistence.Contexts
         {
             foreach (var entry in ChangeTracker.Entries<AuditableBaseEntity>())
             {
-                entry.Entity.DateCreated = DateTime.Now;
-                entry.Entity.CreatedBy = _saveUserViewModel.UserName;
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Entity.DateCreated = DateTime.Now;
+                    entry.Entity.CreatedBy = _saveUserViewModel.UserName;
+                }
             }
 
             return base.SaveChangesAsync(cancellationToken);

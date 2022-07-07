@@ -18,5 +18,6 @@ namespace Social_Network.Core.Application.ViewModels.Post
         [DataType(DataType.Upload)]
         public IFormFile PostImage { get; set; }
         public int UserId { get; set; }
+        public DateTime DateCreated { get; set; }
     }
 }
