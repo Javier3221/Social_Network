@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Social_Network.Core.Application.CDAs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,6 +20,7 @@ namespace Social_Network.Core.Application.ViewModels.User
         public string LastName { get; set; }
         [Required(ErrorMessage = "Your Phone is required")]
         [DataType(DataType.PhoneNumber)]
+        [PhoneFormat]
         public string Phone { get; set; }
         public string ProfileImgUrl { get; set; }
         [Required(ErrorMessage = "You have to include a profile picture")]
