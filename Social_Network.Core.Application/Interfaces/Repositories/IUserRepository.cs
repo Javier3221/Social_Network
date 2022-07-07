@@ -13,5 +13,6 @@ namespace Social_Network.Core.Application.Interfaces.Repositories
         Task<bool> FindUserNameAvailabilty(string userName);
         Task<User> LoginAsync(LoginViewModel entity);
         Task<User> FindUserByUserName(string userName);
+        Task<User> FindUserByEmail(string email);
     }
 }

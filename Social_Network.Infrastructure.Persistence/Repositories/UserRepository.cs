@@ -32,6 +32,14 @@ namespace Social_Network.Infrastructure.Persistence.Repositories
             bool IsAvailable = await _dbContext.Set<User>().FirstOrDefaultAsync(user => user.UserName == userName) == null;
             return IsAvailable;
         }
+
+        public async Task<User> FindUserByEmail(string email)
+        {
+            User user = await _dbContext.Set<User>()
+                .FirstOrDefaultAsync(x => x.Email == email && x.ActivatedAccount == false);
+
+            return user;
+        }
         
         public async Task<User> FindUserByUserName(string userName)
         {

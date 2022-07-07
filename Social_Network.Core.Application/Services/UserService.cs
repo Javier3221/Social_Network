@@ -57,6 +57,13 @@ namespace Social_Network.Core.Application.Services
             return userVm;
         }
 
+        public async Task<SaveUserViewModel> FindUserByEmail(string email)
+        {
+            SaveUserViewModel user = _mapper.Map<SaveUserViewModel>(await _repository.FindUserByEmail(email));
+
+            return user;
+        }
+
         public async Task<List<UserViewModel>> GetAllViewModelWithInclude()
         {
             var userList = await _repository.GetAllWithIncludeAsync(new List<string> { "Friends" });

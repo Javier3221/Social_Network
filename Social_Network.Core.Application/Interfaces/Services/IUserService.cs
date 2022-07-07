@@ -15,5 +15,6 @@ namespace Social_Network.Core.Application.Interfaces.Services
         Task<List<UserViewModel>> GetAllViewModelWithInclude();
         Task<UserViewModel> FindUserByUserName(string userName);
         Task<UserViewModel> GetByIdWithInclude(int id);
+        Task<SaveUserViewModel> FindUserByEmail(string email);
     }
 }
