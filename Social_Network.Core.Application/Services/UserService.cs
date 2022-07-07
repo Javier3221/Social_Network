@@ -117,5 +117,11 @@ namespace Social_Network.Core.Application.Services
 
             return user;
         }
+
+        public async Task ActivateAccount(SaveUserViewModel user)
+        {
+            user.ActivatedAccount = true;
+            await Update(user, user.Id);
+        }
     }
 }
