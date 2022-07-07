@@ -120,5 +120,25 @@ namespace Social_Network.Controllers
             
             return RedirectToRoute(new { controller = "User", action = "Login" });
         }
+
+        public IActionResult ActivateAccount()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ActivateAccount(string email)
+        {
+            SaveUserViewModel user = await _userService.FindUserByEmail(email);
+            if (user == null)
+            {
+                ModelState.AddModelError("emailNotFound", "This account doesn't exist or has already been activated. Please check for spelling errors.");
+                return View();
+            }
+
+            await _userService.ActivateAccount(user);
+            ViewBag.isPost = true;
+            return View();
+        }
     }
 }
